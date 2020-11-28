@@ -1,0 +1,822 @@
+---
+title: "USDA/EPA Data"
+author: "Mercedes Fermelia"
+date: "10/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r} 
+#str(Garden_Data)
+
+#To make a new code chunk: command + option + I
+
+#colnames(Garden_Data) 
+#to get all column names
+
+#Access to Culturally Appropriate Foods
+
+hist(Garden_Data$`Farms with direct sales (% change), 2007 - 12`)
+abline (v = mean(Garden_Data$`Farms with direct sales (% change), 2007 - 12`), col = "red", lwd=3)
+mean(Garden_Data$`Farms with direct sales (% change), 2007 - 12`) 
+
+hist(Garden_Data$`Farmers' markets (% change), 2013-18`)
+abline (v = mean(Garden_Data$`Farmers' markets (% change), 2013-18`), col = "red", lwd=3)
+mean(Garden_Data$`Farmers' markets (% change), 2013-18`) 
+
+hist(Garden_Data$`Farmers' markets/1,000 pop (% change), 2013-18`)
+abline (v = mean(Garden_Data$`Farmers' markets/1,000 pop (% change), 2013-18`), col = "red", lwd=3)
+mean(Garden_Data$`Farmers' markets/1,000 pop (% change), 2013-18`) 
+
+hist(Garden_Data$`Population, low access to store (% change), 2010 -15`)
+abline(v = mean(Garden_Data$`Population, low access to store (% change), 2010 -15`), col = "red", lwd=3)
+mean(Garden_Data$`Population, low access to store (% change), 2010 -15`) 
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+#Chronic Health Conditions
+hist(Garden_Data$`Adult diabetes rate, 2008`)
+abline (v = mean(Garden_Data$`Adult diabetes rate, 2008`), col = "red", lwd=3)
+mean(Garden_Data$`Adult diabetes rate, 2008`)
+
+```
+
+## Including Plots
+
+Adding a Regression Line:
+
+```{r}
+plot(Garden_Data$`Farmers' markets (% change), 2013-18`, WDH_COVID.19_10.22.20_TH$deaths)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+# This plot was generated using http://www.sthda.com/english/wiki/scatter-plots-r-base-graphs
+
+plot(Garden_Data$`% Population 65 years or older, 2010`, WDH_COVID.19_10.22.20_TH$deaths)
+x <- Garden_Data$`% Population 65 years or older, 2010`
+y <- WDH_COVID.19_10.22.20_TH$Deaths
+# Plot with main and axis titles
+# Change point shape (pch = 19) and remove frame.
+plot(x, y, main = "Pop. 65 years+ vs. COVID-19 Deaths",
+     xlab = "Population 65 years or older, 2010", ylab = "COVID-19 Deaths",
+     pch = 19, frame = FALSE)
+# Add regression line
+plot(x, y, main = "Pop. 65 years+ vs. COVID-19 Deaths",
+     xlab = "Population 65 years or older, 2010", ylab = "COVID-19 Deaths",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = mtcars), col = "blue")
+```
+
+```{r}
+# This plot was generated using Tom's method for regression lines
+
+plot(Garden_Data$`Seniors, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Deaths,
+     main = "% Seniors Low Access Store v # Deaths COVID-19”, 
+     xlab = "% Seniors Low Access Store",
+     ylab = "# of Deaths per County",
+     col = "blue")
+abline(lm(Garden_Data$`Seniors, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "red”)
+
+```
+
+```{r}
+#if a pasted version of code doesn't work, try typing it all out to remove any weird formatting
+
+#pch changes the dot shapes, different options by changing the integer pch equals
+
+plot(Garden_Data$`Seniors, low access to store (%), 2015`,WDH_COVID.19_10.22.20_TH$Deaths,
+     main = "% Seniors Low Access Store v # Deaths COVID-19",
+     xlab = "% Seniors Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "blue")
+abline(lm(Garden_Data$`Seniors, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "red")
+```
+
+```{r}
+#pdf(("White Low Access to Store vs. COVID-19.pdf"),width = 10,height = 5)
+# Deaths
+plot(Garden_Data$`White, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% White Low Access Store v # Deaths COVID-19",
+     xlab = "% White Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "red")
+
+abline(lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "red")
+
+plot(log(Garden_Data$`White, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Deaths)),
+     main = "Log % White Low Access Store v Log # Deaths COVID-19",
+     xlab = "Log % White Low Access Store",
+     ylab = "Log # Deaths per County",
+     pch = 20,
+     col = "red")
+
+summary (lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths))
+#p-value: .9838
+#Adjusted R^2: -0.0476 
+
+#Tested
+plot(Garden_Data$`White, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% White Low Access Store v # Tested COVID-19",
+     xlab = "% White Low Access Store",
+     ylab = "# Tested per County",
+     pch = 20,
+     col = "red2")
+
+abline(lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "red2")
+
+plot(log(Garden_Data$`White, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Tested)),
+     main = "Log % White Low Access Store v Log # Tested for COVID-19",
+     xlab = "Log % White Low Access Store",
+     ylab = "Log # Tested for COVID-19 per County",
+     pch = 20,
+     col = "red")
+
+summary (lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested))
+#p-value: 0.1081
+#Adjusted R^2: 0.07628 
+
+#Confirmed Cases
+plot(Garden_Data$`White, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% White Low Access Store v # Cases COVID-19",
+     xlab = "% White Low Access Store",
+     ylab = "# Confirmed Cases per County",
+     pch = 20,
+     col = "red3")
+
+abline(lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Confirmed.Cases), col = "red3")
+
+plot(log(Garden_Data$`White, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Confirmed.Cases)),
+     main = "Log % White Low Access Store v Log # Confirmed Cases COVID-19",
+     xlab = "Log % White Low Access Store",
+     ylab = "Log # Confirmed Cases per County",
+     pch = 20,
+     col = "red")
+
+summary (lm(Garden_Data$`White, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Confirmed.Cases))
+#p-value: 0.07664
+#Adjusted R^2: 0.1009 
+#dev()
+
+```
+
+```{r}
+# Deaths
+plot(Garden_Data$`Black, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% Black Low Access Store v # Deaths COVID-19",
+     xlab = "% Black Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "blue")
+
+abline(lm(Garden_Data$`Black, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "blue")
+
+
+# Tested
+plot(Garden_Data$`Black, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% Black Low Access Store v # Tested COVID-19",
+     xlab = "% Black Low Access Store",
+     ylab = "# Tested per County",
+     pch = 20,
+     col = "blue2")
+
+abline(lm(Garden_Data$`Black, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "blue2")
+
+# Confirmed Cases
+plot(Garden_Data$`Black, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% Black Low Access Store v # Cases COVID-19",
+     xlab = "% Black Low Access Store",
+     ylab = "# Confirmed Cases per County",
+     pch = 20,
+     col = "blue3")
+
+abline(lm(Garden_Data$`Black, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Confirmed.Cases), col = "blue3")
+```
+
+```{r}
+#pdf(("Native American Low Access to Store vs. COVID-19.pdf"),width = 10,height = 5)
+# Deaths
+plot(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% Native American Low Access Store v # Deaths COVID-19",
+     xlab = "% American Indian/Alaska Native Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "light green")
+
+abline(lm(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "light green")
+
+plot(log(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Deaths)),
+     main = "Log % Native American Low Access Store v Log # Deaths COVID-19",
+     xlab = "Log % American Indian/Alaska Native Low Access Store",
+     ylab = "Log # Deaths per County",
+     pch = 20,
+     col = "light green")
+
+summary (lm(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "light green")
+#p-value: .000171
+#Adjusted R^2: 0.4905
+
+
+#Tested
+plot(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% Native American Low Access Store v # Tested COVID-19",
+     xlab = "% American Indian/Alaska Native Low Access Store",
+     ylab = "# Tested per County",
+     pch = 20,
+     col = "green")
+
+abline(lm(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "green")
+
+#Log transform graphs with more points in lower numbers to spread out lower numbers more than higher numbers
+
+#Log corrected
+plot(log(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Tested)),
+     main = "Log % Native American Low Access Store v Log # Tested COVID-19",
+     xlab = "Log % American Indian/Alaska Native Low Access Store",
+     ylab = "Log # Tested per County",
+     pch = 20,
+     col = "light green")
+
+# abline(lm(log(nozeroGarden_Data$`American Indian or Alaska Native, low access to store (%), 2015`)~log (as.numeric (WDH_COVID.19_10.22.20_TH$Tested))), col = "light green")
+#error in abline because taking log of zero in one of counties for American Indian/Alaska Native % low access
+# Didn't work: Garden_Data2<-Garden_Data[ Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015` == 0] <-NA
+
+nozeroGarden_Data <- Garden_Data[ Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015` != 0, ]
+
+WDH_COVID.19_10.22.20_TH <- read.csv("~/Documents/Classes 2020/Capstone MICR 4321/R Analyses/Nutritional-Advantage-main/WDH_COVID-19_10-22-20_TH.csv")
+   View(WDH_COVID.19_10.22.20_TH)
+
+nozeroNiobraraWDH <- WDH_COVID.19_10.22.20_TH[ WDH_COVID.19_10.22.20_TH$County != 'Niobrara', ]
+
+#pdf(("Native_Americans_Food_Access_COVID_Tests.pdf"),width = 10,height = 5)
+plot(log(nozeroGarden_Data$`American Indian or Alaska Native, low access to store (%), 2015`)~ log (as.numeric (nozeroNiobraraWDH$Tested)),
+     main = "Log % Native American Low Access Store v Log # Tested COVID-19",
+     xlab = "Log % American Indian/Alaska Native Low Access Store",
+     ylab = "Log # Tested per County",
+     pch = 20,
+     col = "light green")
+abline(lm(log(nozeroGarden_Data$`American Indian or Alaska Native, low access to store (%), 2015`)~ log (as.numeric (nozeroNiobraraWDH$Tested))), col = "red",lwd=5)
+
+#x and y were swapped b/c of ~ vs. ,
+# plot fx uses both but abline reads them different
+#not running line for some reason...
+#had to make both garden data and COVID data nozero to match number of rows
+#Ben messed with parentheses and got it to work on his
+dev.off()
+
+summary (lm(nozeroGarden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~nozeroNiobraraWDH$Tested), col = "light green")
+#p-value: 0.008455
+#Adjusted R^2: 0.2639
+
+#Confirmed Cases
+plot(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~ WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% Native American Low Access Store v # Cases COVID-19",
+     xlab = "% American Indian/Alaska Native Low Access Store",
+     ylab = "# Confirmed Cases per County",
+     pch = 20,
+     col = "dark green")
+
+abline(lm(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~ WDH_COVID.19_10.22.20_TH$Confirmed.Cases), col = "dark green")
+
+plot(log(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`), log (as.numeric (WDH_COVID.19_10.22.20_TH$Confirmed.Cases)),
+     main = "Log % Native American Low Access Store v Log # Confirmed Cases COVID-19",
+     xlab = "Log % American Indian/Alaska Native Low Access Store",
+     ylab = "Log # Confirmed Cases per County",
+     pch = 20,
+     col = "light green")
+#figure out how to do abline function for log corrected scatterplots
+
+summary (lm(Garden_Data$`American Indian or Alaska Native, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Confirmed.Cases), col = "light green")
+#p-value: .01027
+#Adjusted R^2: 0.24
+#(dev)
+
+#find r value code
+```
+
+```{r}
+# Deaths
+plot(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% Hispanic Low Access Store v # Deaths COVID-19",
+     xlab = "% Hispanic Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "purple")
+
+abline(lm(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "purple")
+
+#Tested
+plot(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% Hispanic Low Access Store v # Tested COVID-19",
+     xlab = "% Hispanic Low Access Store",
+     ylab = "# Tested per County",
+     pch = 20,
+     col = "purple2")
+
+abline(lm(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "purple2")
+
+#Confirmed Cases
+plot(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% Hispanic Low Access Store v # Cases COVID-19",
+     xlab = "% Hispanic Low Access Store",
+     ylab = "# Confirmed Cases per County",
+     pch = 20,
+     col = "purple2")
+
+abline(lm(Garden_Data$`Hispanic ethnicity, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Confirmed.Cases), col = "purple2")
+
+#find r value code
+```
+
+```{r}
+# Deaths
+plot(Garden_Data$`Asian, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% Asian Low Access Store v # Deaths COVID-19",
+     xlab = "% Asian Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "orange")
+
+abline(lm(Garden_Data$`Asian, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "orange")
+
+#Tested
+plot(Garden_Data$`Asian, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% Asian Low Access Store v # Tested COVID-19",
+     xlab = "% Asian Low Access Store",
+     ylab = "# Tested per County",
+     pch = 20,
+     col = "orange2")
+
+abline(lm(Garden_Data$`Asian, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "orange2")
+
+#Confirmed Cases
+plot(Garden_Data$`Asian, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% Asian Low Access Store v # Cases COVID-19",
+     xlab = "% Asian Low Access Store",
+     ylab = "# Confirmed cases per County",
+     pch = 20,
+     col = "orange3")
+
+abline(lm(Garden_Data$`Asian, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "orange3")
+
+#find r value code
+```
+
+```{r}
+# Deaths
+plot(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$deaths,
+     main = "% Hawaiian Low Access Store v # Deaths COVID-19",
+     xlab = "% Hawaiian/Pacific Islander Low Access Store",
+     ylab = "# Deaths per County",
+     pch = 20,
+     col = "aquamarine")
+
+abline(lm(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "aquamarine")
+
+# Tested
+plot(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Tested,
+     main = "% Hawaiian Low Access Store v # Tested for COVID-19",
+     xlab = "% Hawaiian/Pacific Islander Low Access Store",
+     ylab = "# Tests per County",
+     pch = 20,
+     col = "aquamarine2")
+
+abline(lm(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Tested), col = "aquamarine2")
+
+# Confirmed Cases
+plot(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`, WDH_COVID.19_10.22.20_TH$Confirmed.Cases,
+     main = "% Hawaiian Low Access Store v # Cases COVID-19",
+     xlab = "% Hawaiian/Pacific Islander Low Access Store",
+     ylab = "# Confirmed Cases per County",
+     pch = 20,
+     col = "aquamarine3")
+
+abline(lm(Garden_Data$`Hawaiian or Pacific Islander, low access to store (%), 2015`~WDH_COVID.19_10.22.20_TH$Deaths), col = "aquamarine3")
+# find r value code
+```
+
+```{r}
+## Trying out mapping functions
+mapWorld <- tm_shape(World) +
+    tm_polygons("Native American Low Access Store", palette="-Blues", contrast=.7, id="name", title="American Indian or Alaska Native, low access to store (%), 2015") +
+    tm_shape(Tested) +
+    tm_bubbles("Garden_Data", col = "American Indian or Alaska Native, low access to store (%), 2015", 
+               border.col = "black", border.alpha = .5, 
+               style="fixed", breaks=c(-Inf, seq(0, 6, by=2), Inf),
+               palette="-RdYlBu", contrast=1, 
+               title.size="Tested", 
+               title.col="Growth rate (%)", id="name")
+
+mapWorld
+```
+```{r}
+food_data <- read_xls("Food_Data_updated.xls")
+```
+
+
+```{r}
+# ggplot needs to be same data set
+# spaces in code don't matter in R
+# + need to be at end of previous line to work
+# geom_DESIREDGRAPH and doesn't need anything in the ()'s
+
+library(ggplot2)
+
+#define data and variables
+plot1 <- ggplot(combo_garden_COVID, aes(x = `American Indian or Alaska Native, low access to store (%), 2015`, y = Deaths, size=Tested, col="blue")) + 
+  geom_point() + geom_point(aes(x = `White, low access to store (%), 2015`, y = Deaths, col="red")) + 
+  geom_point(aes (x = `Black, low access to store (%), 2015`, y = Deaths, col ="green")) +
+  geom_point(aes (x = `Asian, low access to store (%), 2015`, y = Deaths, col ="purple")) +
+  geom_point(aes (x = `Hispanic ethnicity, low access to store (%), 2015`, y = Deaths, col ="orange")) +
+  geom_point(aes (x = `Hawaiian or Pacific Islander, low access to store (%), 2015`, y = Deaths, col ="pink")) +
+  geom_point(aes (x = `Multiracial, low access to store (%), 2015`, y = Deaths, col ="green")) 
+
+library(plotly)
+ggplotly(plot1)
+
+#log
+# scale_x_log10()
+# scale_y_log10()
+
+#log option vs regular scatterplot on drop down
+#visualization may be better without log
+
+```
+
+```{r}
+# Seniors, Children, Low Income
+plot2 <- ggplot(combo_garden_COVID, aes(x = `Children, low access to store (%), 2015`, y = Deaths, size=Tested, col="blue")) + 
+  geom_point() +  geom_point(aes (x = `Seniors, low access to store (%), 2015`, y = Deaths, col ="green")) +
+  geom_point(aes (x = `Hispanic ethnicity, low access to store (%), 2015`, y = Deaths, col ="red")) +
+  geom_point(aes (x = `Population, low access to store (%), 2015`, y = Deaths, col ="purple"))
+
+
+library(plotly)
+ggplotly(plot2)
+
+
+```
+```{r}
+# Native Americans, Hispanic, Low Income, Population
+plot02 <- ggplot(combo_garden_COVID, aes(x = `American Indian or Alaska Native, low access to store (%), 2015`, y = Deaths, size=Tested, col="blue")) + 
+  geom_point() +  geom_point(aes (x = `Hispanic ethnicity, low access to store (%), 2015`, y = Deaths, col ="green")) +
+  geom_point(aes (x = `Low income & low access to store (%), 2015`, y = Deaths, col ="red")) +
+  geom_point(aes (x = `Population, low access to store (%), 2015`, y = Deaths, col ="purple"))
+
+
+library(plotly)
+ggplotly(plot02)
+```
+
+```{r}
+# #Deaths/County
+#library(ggplot2)
+plot3 <- ggplot(combo_garden_COVID, aes(x = `County`, y = Deaths,)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot3)
+```
+
+```{r}
+# #Confirmed.Cases/County
+
+#library(ggplot2)
+plot4 <- ggplot(combo_garden_COVID, aes(x = `County`, y = Confirmed.Cases,)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot4)
+```
+```{r}
+# #Tested/County
+
+#library(ggplot2)
+plot5 <- ggplot(combo_garden_COVID, aes(x = `County`, y = Tested,)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot5)
+```
+```{r}
+# #Contacts/County
+
+#library(ggplot2)
+plot6 <- ggplot(combo_garden_COVID, aes(x = `County`, y = Contacts,)) +
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot6)
+```
+```{r}
+# #Probable.Cases/County
+
+#library(ggplot2)
+plot7 <- ggplot(combo_garden_COVID, aes(x = `County`, y = Probable.Cases,)) +
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot7)
+```
+
+```{r}
+# #merge food data with covid data
+
+# same bar graphs broken down by race, food access, diabetes, etc.
+```
+
+
+```{r}
+library(zoo) # moving averages        
+library(tidyverse) # all tidyverse packages
+library(hrbrthemes) # themes for graphs
+library(socviz) # %nin%
+library(geofacet) # maps
+library(usmap) # lat and long
+library(socviz) # for %nin%
+library(ggmap) # mapping
+```
+
+
+```{r}
+JHCovid19States <- readr::read_csv("https://raw.githubusercontent.com/mjfrigaard/storybench/master/drafts/data/jhsph/2020-06-22-JHCovid19States.csv")
+```
+
+```{r}
+utils::head(JHCovid19States)
+```
+
+```{r}
+JHCovid19States <- JHCovid19States %>%
+    dplyr::arrange(desc(state)) %>% 
+    dplyr::group_by(state) %>% 
+    dplyr::mutate(death_03da = zoo::rollmean(deaths, k = 3, fill = NA),
+                  death_05da = zoo::rollmean(deaths, k = 5, fill = NA),
+                  death_07da = zoo::rollmean(deaths, k = 7, fill = NA),
+                  death_15da = zoo::rollmean(deaths, k = 15, fill = NA),
+                  death_21da = zoo::rollmean(deaths, k = 21, fill = NA)) %>% 
+  dplyr::ungroup()
+```
+
+```{r}
+JHCovid19States %>% 
+  dplyr::arrange(date) %>% 
+  dplyr::filter(state == "Wyoming") %>% 
+  dplyr::select(state,
+                date,
+                deaths,
+                death_03da:death_21da) %>% 
+  utils::head(20)
+```
+
+```{r}
+JHCovid19County <- readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv")
+```
+
+```{r}
+utils::head(JHCovid19County)
+```
+
+```{r}
+library(tidyr)
+Corrected_JH_County_Deaths <- gather (JHCovid19County, Date, Deaths, 13:316)
+# corrected format of datset
+```
+
+```{r}
+utils::head(Corrected_JH_County_Deaths)
+```
+
+```{r}
+#change state names to abbreviations in JH data
+#Function to convert state FIPS codes to full state names or vice-versa [as factor levels for downstream grouping]:
+#x is a vector of state abbreviations, or full state names.
+#direction (name to code, or code to name) is determined automatically based on the supplied data
+#depending on ultimate use of the returned set, users may wish to retain factor levels for all states (default) or only those states for which data was passed to the function. factor levels (faclevs) should be indicated ('all' or 'selected') so as to return the desired state factors for downstream use (default is to supply factor levels only for those states supplied in the dataset).
+
+stateConversion <- function(x, faclevs = 'selected') {
+ 
+    st.codes <- data.frame(state = as.factor(c("AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI",
+                                            "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN",
+                                            "MO", "MS",  "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH",
+                                            "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT",
+                                            "WA", "WI", "WV", "WY")),
+                            full = as.factor(c("Alaska","Alabama" ,  "Arkansas", "Arizona","California" , "Colorado" ,
+                                            "Connecticut", "District of Columbia","Delaware" ,  "Florida" , "Georgia" ,
+                                            "Hawaii","Iowa" ,"Idaho" , "Illinois" , "Indiana" ,  "Kansas" ,
+                                            "Kentucky" , "Louisiana" , "Massachusetts", "Maryland" ,"Maine" ,
+                                            "Michigan" , "Minnesota" , "Missouri" ,"Mississippi" ,  "Montana" ,
+                                            "North Carolina","North Dakota", "Nebraska" , "New Hampshire" , "New Jersey" ,  "New Mexico" ,
+                                            "Nevada" ,"New York" , "Ohio" , "Oklahoma" ,
+                                            "Oregon" , "Pennsylvania" , "Puerto Rico", "Rhode Island" , "South Carolina", "South Dakota" ,
+                                            "Tennessee" , "Texas" , "Utah" ,  "Virginia","Vermont" ,
+                                            "Washington" , "Wisconsin", "West Virginia" , "Wyoming"))
+    )
+ 
+    if (nchar(x[1]) == 2) { st.x <- data.frame(state = x); refac.x <- st.codes$full[match(tolower(st.x$state), tolower(st.codes$state))] }
+    else { st.x <- data.frame(full = x); refac.x <- st.codes$state[match(tolower(st.x$full), tolower(st.codes$full))] }
+ 
+    if(faclevs == 'all') {return(refac.x)}
+    else {return(factor(refac.x))}
+}
+```
+```{r}
+
+food_data$FullState <- stateConversion(x = food_data$State, faclevs = 'selected')
+  
+#match combined key
+food_data$Combined_Key <- paste (food_data$County, food_data$FullState, sep = ", ")
+
+#gsub = find and replace function to take out "US"
+Corrected_JH_County_Deaths$Combined_Key <- gsub (", US", "", Corrected_JH_County_Deaths$Combined_Key)
+
+Corrected_JH_County_Deaths <- Corrected_JH_County_Deaths[Corrected_JH_County_Deaths$Date == "11/20/20",] 
+```
+
+
+
+```{r}
+#%in% look in JH for food_data combined
+sum(food_data$Combined_Key %in% Corrected_JH_County_Deaths$Combined_Key)
+sum(Corrected_JH_County_Deaths$Combined_Key %in% food_data$Combined_Key)
+
+#shrink food data to match Corrected_JH_County_Deaths
+ShrinkDeaths_Food <- food_data [(food_data$Combined_Key %in% Corrected_JH_County_Deaths$Combined_Key),]
+
+```
+
+```{r}
+library(dplyr)
+
+final <- left_join(ShrinkDeaths_Food, Corrected_JH_County_Deaths, by = "Combined_Key")
+```
+
+```{r}
+library(ggplot2)
+library(plotly)
+```
+
+```{r}
+# #Deaths/State: Access to Stores by Population in 2015
+
+plot10 <- ggplot(final, aes(x = `State`, y = LACCESS_POP15)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot10)
+```
+
+```{r}
+# #Deaths/State: Access to Stores by Population in 2015
+
+plot10 <- ggplot(final, aes(x = `State`, y = LACCESS_POP15)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() 
+  
+#library(plotly)
+ggplotly(plot10)
+```
+
+```{r}
+# Load the library
+library(leaflet)
+
+# Note: if you do not already installed it, install it with:
+# install.packages("leaflet")
+
+# Background 1: NASA
+m <- leaflet() %>% 
+   addTiles() %>% 
+   setView( lng = 2.34, lat = 48.85, zoom = 5 ) %>% 
+   addProviderTiles("NASAGIBS.ViirsEarthAtNight2012")
+m
+ 
+# Background 2: World Imagery
+m <- leaflet() %>% 
+   addTiles() %>% 
+   setView( lng = 2.34, lat = 48.85, zoom = 3 ) %>% 
+   addProviderTiles("Esri.WorldImagery")
+m
+
+# save the widget in a html file if needed.
+# library(htmlwidgets)
+# saveWidget(m, file=paste0( getwd(), "/HtmlWidget/backgroundMapTile.html", width="1000px"))
+```
+
+```{r}
+# Libraries
+library(ggplot2)
+library(dplyr)
+ 
+# Get the world polygon and extract USA
+library(maps)
+USA <- map_data("world") %>% filter(region=="USA")
+```
+
+```{r}
+# Get a data frame with longitude, latitude, and size of bubbles (a bubble = a city)
+data <- world.cities %>% filter(country.etc=="USA")
+```
+
+```{r}
+# Left chart
+ggplot() +
+  geom_polygon(data = USA, aes(x=long, y = lat, group = group), fill="grey", alpha=0.3) +
+  geom_point( data=data, aes(x=long, y=lat)) +
+  theme_void() + ylim(50,59) + coord_map() 
+```
+
+
+```{r}
+library(ggplot2) #pretty graphs
+library(dplyr) #manipulating dataframes
+library(maps) #map data
+library (plotly) #interactive
+
+#extracting wyoming county data from map data
+counties.wy <- map_data("county", region="wyoming")
+
+#read in coiv data downloaded from https://datahub.io/core/covid-19
+covid <- read.csv("~/Downloads/us_simplified_csv.csv") 
+#subset wyoming counties and get rid of extras
+covid.wy <- covid[covid$Province.State=="Wyoming",]
+covid.wy <- covid.wy[covid.wy$Admin2!="Unassigned" & covid.wy$Admin2!="Out of WY",]
+#subset most recent dates
+covid.wy.recent <- covid.wy [covid.wy$Date=="2020-10-24",]
+#change the county column so it matches the map data
+colnames (covid.wy.recent)[2] <- "subregion"
+covid.wy.recent$subregion <- tolower(covid.wy.recent$subregion)
+
+#merge covid and county data
+counties.covid.wy <- left_join(counties.wy, covid.wy.recent, by="subregion")
+
+#reading in data for label coordinates that I also added population data to because why not
+point_data <- read.csv ("~/Downloads/County_labels.csv")
+
+wy_food_data <- food_data [food_data$State == "WY" & food_data$County != "Total",]
+
+dim (wy_food_data)
+
+point_data$County == wy_food_data$County
+
+point_data <- cbind (point_data, wy_food_data)
+point_data <- point_data[,-3]
+
+```
+
+
+```{r}
+#plot!!!
+map <- ggplot() +
+  #add counties as polygons and color by confirmed cases
+  #color=black gives black borders
+  geom_polygon(data = counties.covid.wy, aes(x=long, y = lat, group = group, fill=Confirmed), color="black") +
+  #Add points in each county scaled by population
+  geom_point (data=point_data, aes(x=long, y = lat + 0.1, color=as.numeric (PCT_NHWHITE10), size=as.numeric (PCT_LACCESS_POP15))) +
+  #adding labels
+  geom_text(data=point_data, aes(x=long, y = lat - 0.05, label=County), size=3) +
+  #Changing the color scheme to obnoxiously bright colors
+  scale_fill_gradient (low="white", high="#FF0000", name="Confirmed \nCOVID Cases") +
+  scale_size_continuous(name="% Population Low Access Store") 
+  #getting rid of axis/labels
+  theme_void() +
+  #creating a title
+  ggtitle("Wyoming COVID Cases by County") +
+  #centering the title
+  theme(plot.title = element_text(hjust = 0.5))
+map #static map
+```
+```{r}
+
+wy_combo_covid_food <- cbind(covid.wy.recent, point_data)
+wy_combo_covid_food <- wy_combo_covid_food[,-2]
+#colnames (wy_combo_covid_food)
+  
+plot11 <- ggplot(data = wy_combo_covid_food, aes (x=as.numeric (PCT_LACCESS_POP15), y=Confirmed, color=as.numeric (PCT_NHWHITE10))) +
+  geom_point() +
+  geom_smooth(method="lm", se=FALSE) +
+  theme_classic()
+ggplotly (plot11)
+```
+
+
